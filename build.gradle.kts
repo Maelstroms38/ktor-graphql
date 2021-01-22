@@ -12,6 +12,8 @@ val bcrypt_version: String by project
 plugins {
     application
     kotlin("jvm") version "1.4.21"
+    // Check the shadow plugin manual if you're using an older version of Gradle.
+    id("com.github.johnrengelman.shadow") version "6.1.0"
 }
 tasks {
     compileKotlin {
@@ -27,6 +29,16 @@ version = "0.0.1"
 
 application {
     mainClassName = "io.ktor.server.netty.EngineMain"
+}
+
+tasks.withType<Jar> {
+    manifest {
+        attributes(
+                mapOf(
+                        "Main-Class" to application.mainClassName
+                )
+        )
+    }
 }
 
 repositories {
