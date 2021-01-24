@@ -7,7 +7,7 @@ import com.example.repository.ReviewRepository
 import com.mongodb.client.MongoClient
 import org.koin.core.KoinComponent
 import org.koin.core.inject
-import java.util.*
+import java.util.UUID
 
 class DessertService: KoinComponent {
     private val client: MongoClient by inject()
@@ -20,8 +20,8 @@ class DessertService: KoinComponent {
         return dessert
     }
 
-    fun getDesserts(): List<Dessert> {
-        return repo.getAll()
+    fun getDessertsPage(page: Int, size: Int): List<Dessert> {
+        return repo.getDessertsPage(page, size)
     }
 
     fun createDessert(dessertInput: DessertInput, userId: String): Dessert {

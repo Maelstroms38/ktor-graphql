@@ -1,6 +1,7 @@
 package com.example.graphql
 
 import com.apurebase.kgraphql.schema.dsl.SchemaBuilder
+import com.example.models.User
 import com.example.models.UserInput
 import com.example.services.AuthService
 
@@ -25,5 +26,9 @@ fun SchemaBuilder.authSchema(authService: AuthService) {
                 null
             }
         }
+    }
+
+    type<User>{
+        User::hashedPass.ignore()
     }
 }

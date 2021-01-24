@@ -42,7 +42,7 @@ class UserRepository(client: MongoClient) : RepositoryInterface<User> {
 
     override fun delete(id: String): Boolean {
         return try {
-            val res = col.deleteOne<User>(User::id eq id)
+            col.deleteOne<User>(User::id eq id)
             true
         } catch (t: Throwable) {
             throw Exception("Cannot delete user")
@@ -51,7 +51,7 @@ class UserRepository(client: MongoClient) : RepositoryInterface<User> {
 
     override fun add(entry: User): User {
         return try {
-            val res = col.insertOne(entry)
+            col.insertOne(entry)
             entry
         } catch (t: Throwable) {
             throw Exception("Cannot add user")

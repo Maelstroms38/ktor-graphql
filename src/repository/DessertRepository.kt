@@ -23,6 +23,17 @@ class DessertRepository(client: MongoClient) : RepositoryInterface<Dessert> {
         }
     }
 
+    fun getDessertsPage(page: Int, size: Int): List<Dessert> {
+        try {
+            val skips = size * page
+            val res = col.find().limit(size).skip(skips)
+                    ?: throw Exception("No desserts exist")
+            return res.asIterable().map { it }.toList()
+        } catch (t: Throwable) {
+            throw Exception("Cannot get desserts page")
+        }
+    }
+
     override fun getAll(): List<Dessert> {
         return try {
             val res = col.find()

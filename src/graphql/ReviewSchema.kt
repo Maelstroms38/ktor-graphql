@@ -2,8 +2,7 @@ package com.example.graphql
 
 import com.apurebase.kgraphql.Context
 import com.apurebase.kgraphql.schema.dsl.SchemaBuilder
-import com.example.models.ReviewInput
-import com.example.models.User
+import com.example.models.*
 import com.example.services.ReviewService
 
 fun SchemaBuilder.reviewSchema(reviewService: ReviewService) {
@@ -17,5 +16,13 @@ fun SchemaBuilder.reviewSchema(reviewService: ReviewService) {
                 null
             }
         }
+    }
+
+    inputType<ReviewInput>{
+        description = "The input of the review without the identifier"
+    }
+
+    type<Review>{
+        description = "Review object with the attributes text and rating"
     }
 }

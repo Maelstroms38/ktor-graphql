@@ -2,12 +2,15 @@ package com.example.graphql
 
 import com.apurebase.kgraphql.Context
 import com.apurebase.kgraphql.schema.dsl.SchemaBuilder
-import com.example.models.Dessert
-import com.example.models.DessertInput
-import com.example.models.User
+import com.example.models.*
 import com.example.services.DessertService
 
 fun SchemaBuilder.dessertSchema(dessertService: DessertService) {
+
+    inputType<DessertInput>{
+        description = "The input of the dessert without the identifier"
+    }
+
     query("dessert") {
         resolver { dessertId: String ->
             try {
@@ -19,10 +22,10 @@ fun SchemaBuilder.dessertSchema(dessertService: DessertService) {
     }
 
     query("desserts") {
-        description = "Retrieve all desserts"
-        resolver { ->
+        description = "Retrieve desserts page"
+        resolver { page: Int?, size: Int? ->
             try {
-                dessertService.getDesserts()
+                dessertService.getDessertsPage(page ?: 0, size ?: 10)
             } catch (e: Exception) {
                 emptyList<Dessert>()
             }
@@ -65,11 +68,4 @@ fun SchemaBuilder.dessertSchema(dessertService: DessertService) {
         }
     }
 
-    inputType<DessertInput>{
-        description = "The input of the dessert without the identifier"
-    }
-
-    type<Dessert>{
-        description = "Dessert object with the attributes name, description and imageUrl"
-    }
 }
