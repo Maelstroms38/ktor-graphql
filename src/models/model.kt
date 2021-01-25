@@ -5,6 +5,10 @@ data class Dessert(val id: String, val userId: String, var name: String, var des
 
 data class DessertInput(val name: String, val description: String, val imageUrl: String)
 
+data class PagingInfo(var count: Int, var pages: Int, var next: Int?, var prev: Int?)
+
+data class DessertsPage(val results: List<Dessert>, val info: PagingInfo)
+
 data class Review(val id: String, val userId: String, val dessertId: String, val text: String, val rating: Int)
 
 data class ReviewInput(val text: String, val rating: Int)

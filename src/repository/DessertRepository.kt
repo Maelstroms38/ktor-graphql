@@ -1,6 +1,8 @@
 package com.example.repository
 
 import com.example.models.Dessert
+import com.example.models.DessertsPage
+import com.example.models.PagingInfo
 import com.mongodb.client.MongoClient
 import com.mongodb.client.MongoCollection
 import org.litote.kmongo.*
@@ -23,12 +25,18 @@ class DessertRepository(client: MongoClient) : RepositoryInterface<Dessert> {
         }
     }
 
-    fun getDessertsPage(page: Int, size: Int): List<Dessert> {
+    fun getDessertsPage(page: Int, size: Int): DessertsPage {
         try {
-            val skips = size * page
-            val res = col.find().limit(size).skip(skips)
+            val skips = page * size
+            val res = col.find().skip(skips).limit(size)
                     ?: throw Exception("No desserts exist")
-            return res.asIterable().map { it }.toList()
+            val results = res.asIterable().map { it }.toList()
+            val totalDesserts = col.estimatedDocumentCount()
+            val totalPages = (totalDesserts / size) + 1
+            val next = if (results.isNotEmpty()) page + 1 else null
+            val prev = if (page > 0) page - 1 else null
+            val info = PagingInfo(totalDesserts.toInt(), totalPages.toInt(), next, prev)
+            return DessertsPage(results, info)
         } catch (t: Throwable) {
             throw Exception("Cannot get desserts page")
         }

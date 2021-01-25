@@ -2,6 +2,7 @@ package com.example.services
 
 import com.example.models.Dessert
 import com.example.models.DessertInput
+import com.example.models.DessertsPage
 import com.example.repository.DessertRepository
 import com.example.repository.ReviewRepository
 import com.mongodb.client.MongoClient
@@ -20,7 +21,7 @@ class DessertService: KoinComponent {
         return dessert
     }
 
-    fun getDessertsPage(page: Int, size: Int): List<Dessert> {
+    fun getDessertsPage(page: Int, size: Int): DessertsPage {
         return repo.getDessertsPage(page, size)
     }
 

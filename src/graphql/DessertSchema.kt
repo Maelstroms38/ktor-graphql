@@ -27,7 +27,7 @@ fun SchemaBuilder.dessertSchema(dessertService: DessertService) {
             try {
                 dessertService.getDessertsPage(page ?: 0, size ?: 10)
             } catch (e: Exception) {
-                emptyList<Dessert>()
+                null
             }
         }
     }
