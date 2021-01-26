@@ -4,9 +4,11 @@ import com.apurebase.kgraphql.GraphQL
 import com.example.di.mainModule
 import com.example.graphql.authSchema
 import com.example.graphql.dessertSchema
+import com.example.graphql.profileSchema
 import com.example.graphql.reviewSchema
 import com.example.services.AuthService
 import com.example.services.DessertService
+import com.example.services.ProfileService
 import com.example.services.ReviewService
 import io.ktor.application.*
 import org.koin.core.context.startKoin
@@ -25,6 +27,7 @@ fun Application.module(testing: Boolean = false) {
         val authService = AuthService()
         val dessertService = DessertService()
         val reviewService = ReviewService()
+        val profileService = ProfileService()
 
         playground = true
         context { call ->
@@ -36,6 +39,7 @@ fun Application.module(testing: Boolean = false) {
             authSchema(authService)
             dessertSchema(dessertService)
             reviewSchema(reviewService)
+            profileSchema(profileService)
         }
     }
 }

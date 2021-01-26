@@ -16,6 +16,14 @@ class DessertRepository(client: MongoClient) : RepositoryInterface<Dessert> {
         col = database.getCollection<Dessert>("Dessert")
     }
 
+    fun getDessertsByUserId(userId: String): List<Dessert> {
+        return try {
+            col.find(Dessert::userId eq userId).asIterable().map { it }
+        } catch (t: Throwable) {
+            throw Exception("Cannot get user desserts")
+        }
+    }
+
     override fun getById(id: String): Dessert {
         return try {
             col.findOne(Dessert::id eq id)
@@ -30,7 +38,7 @@ class DessertRepository(client: MongoClient) : RepositoryInterface<Dessert> {
             val skips = page * size
             val res = col.find().skip(skips).limit(size)
                     ?: throw Exception("No desserts exist")
-            val results = res.asIterable().map { it }.toList()
+            val results = res.asIterable().map { it }
             val totalDesserts = col.estimatedDocumentCount()
             val totalPages = (totalDesserts / size) + 1
             val next = if (results.isNotEmpty()) page + 1 else null

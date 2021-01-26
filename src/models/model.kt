@@ -13,6 +13,8 @@ data class Review(val id: String, val userId: String, val dessertId: String, val
 
 data class ReviewInput(val text: String, val rating: Int)
 
+data class Profile(val user: User, val desserts: List<Dessert> = emptyList())
+
 data class User(val id: String, val email: String, val hashedPass: ByteArray)
 
 data class UserInput(val email: String, val password: String)
