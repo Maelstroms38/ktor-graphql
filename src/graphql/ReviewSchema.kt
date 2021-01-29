@@ -6,6 +6,18 @@ import com.example.models.*
 import com.example.services.ReviewService
 
 fun SchemaBuilder.reviewSchema(reviewService: ReviewService) {
+
+    query("getReview") {
+        description = "Get an existing review"
+        resolver { reviewId: String ->
+            try {
+                reviewService.getReview(reviewId)
+            } catch (e: Exception) {
+                null
+            }
+        }
+    }
+
     mutation("createReview") {
         description = "Create a new review"
         resolver { dessertId: String, reviewInput: ReviewInput, ctx: Context ->

@@ -12,6 +12,10 @@ class ReviewService: KoinComponent {
     private val client: MongoClient by inject()
     private val repo = ReviewRepository(client)
 
+    fun getReview(id: String): Review {
+        return repo.getById(id)
+    }
+
     fun createReview(userId: String, dessertId: String, reviewInput: ReviewInput): Review {
         val uid = UUID.randomUUID().toString()
         val review = Review(
