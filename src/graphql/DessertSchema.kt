@@ -1,13 +1,12 @@
 package com.example.graphql
 
+import com.apurebase.kgraphql.Context
 import com.apurebase.kgraphql.schema.dsl.SchemaBuilder
 import com.example.models.Dessert
 import com.example.models.DessertInput
-import com.example.repository.DessertRepository
+import com.example.services.DessertService
 
-fun SchemaBuilder.dessertSchema() {
-
-    val repository = DessertRepository()
+fun SchemaBuilder.dessertSchema(dessertService: DessertService) {
 
     inputType<DessertInput> {
         description = "The input of the dessert without the identifier"
@@ -20,7 +19,7 @@ fun SchemaBuilder.dessertSchema() {
     query("dessert") {
         resolver { dessertId: String ->
             try {
-                repository.getById(dessertId)
+                dessertService.getDessert(dessertId)
             } catch (e: Exception) {
                 null
             }
@@ -28,25 +27,47 @@ fun SchemaBuilder.dessertSchema() {
     }
 
     query("desserts") {
-        resolver { ->
+        resolver { page: Int?, size: Int? ->
             try {
-                repository.getAll()
+                dessertService.getDessertsPage(page ?: 0, size ?: 10)
             } catch (e: Exception) {
-                emptyList<Dessert>()
+                null
             }
         }
     }
 
     mutation("createDessert") {
         description = "Create a new dessert"
-        resolver { dessertInput: DessertInput ->
+        resolver { dessertInput: DessertInput, ctx: Context ->
             try {
-                val uid = java.util.UUID.randomUUID().toString()
-                val dessert = Dessert(uid, dessertInput.name, dessertInput.description, dessertInput.imageUrl)
-                repository.add(dessert)
-                dessert
+                val userId = "abc"
+                dessertService.createDessert(dessertInput, userId)
             } catch (e: Exception) {
                 null
+            }
+        }
+    }
+
+    mutation("updateDessert") {
+        description = "Updates a dessert"
+        resolver { dessertId: String, dessertInput: DessertInput, ctx: Context ->
+            try {
+                val userId = "abc"
+                dessertService.updateDessert(userId, dessertId, dessertInput)
+            } catch (e: Exception) {
+                null
+            }
+        }
+    }
+
+    mutation("deleteDessert") {
+        description = "Deletes a dessert"
+        resolver { dessertId: String, ctx: Context ->
+            try {
+                val userId = "abc"
+                dessertService.deleteDessert(userId, dessertId)
+            } catch(e: Exception) {
+                false
             }
         }
     }
