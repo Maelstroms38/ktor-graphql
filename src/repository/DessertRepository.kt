@@ -16,6 +16,14 @@ class DessertRepository(client: MongoClient) : RepositoryInterface<Dessert> {
         col = database.getCollection<Dessert>("Dessert")
     }
 
+    fun getDessertsByUserId(userId: String): List<Dessert> {
+        return try {
+            col.find(Dessert::userId eq userId).asIterable().map { it }
+        } catch (t: Throwable) {
+            throw Exception("Cannot get user desserts")
+        }
+    }
+
     fun getDessertsPage(page: Int, size: Int): DessertsPage {
         try {
             val skips = page * size
