@@ -1,6 +1,7 @@
 package com.example
 
 import com.apurebase.kgraphql.GraphQL
+import com.example.graphql.dessertSchema
 import io.ktor.application.*
 
 fun main(args: Array<String>): Unit = io.ktor.server.netty.EngineMain.main(args)
@@ -12,9 +13,7 @@ fun Application.module(testing: Boolean = false) {
     install(GraphQL) {
         playground = true
         schema {
-            query("hello") {
-                resolver { -> "World" }
-            }
+            dessertSchema()
         }
     }
 }
