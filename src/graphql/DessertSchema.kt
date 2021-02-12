@@ -2,9 +2,7 @@ package com.example.graphql
 
 import com.apurebase.kgraphql.Context
 import com.apurebase.kgraphql.schema.dsl.SchemaBuilder
-import com.example.models.Dessert
-import com.example.models.DessertInput
-import com.example.models.User
+import com.example.models.*
 import com.example.services.DessertService
 
 fun SchemaBuilder.dessertSchema(dessertService: DessertService) {
@@ -28,6 +26,7 @@ fun SchemaBuilder.dessertSchema(dessertService: DessertService) {
     }
 
     query("desserts") {
+        description = "Retrieve desserts page"
         resolver { page: Int?, size: Int? ->
             try {
                 dessertService.getDessertsPage(page ?: 0, size ?: 10)
