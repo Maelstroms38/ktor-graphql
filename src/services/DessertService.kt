@@ -3,7 +3,6 @@ package com.example.services
 import com.example.models.Dessert
 import com.example.models.DessertInput
 import com.example.models.DessertsPage
-import com.example.models.Review
 import com.example.repository.DessertRepository
 import com.example.repository.ReviewRepository
 import com.mongodb.client.MongoClient
